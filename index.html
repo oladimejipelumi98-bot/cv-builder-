@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free CV Builder - Make a CV in Minutes</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6fb;margin:0;padding:12px;color:#222}
+.wrap{max-width:600px;margin:auto}
+h1{font-size:22px;text-align:center;color:#0b5ed7}
+.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 10px #0002;margin-bottom:14px}
+input,textarea,select{width:100%;box-sizing:border-box;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:8px;font-size:15px;font-family:inherit;background:#fff}
+input[type=color]{height:44px;padding:3px}
+textarea{min-height:70px}
+button{width:100%;padding:12px;background:#0b5ed7;color:#fff;border:0;border-radius:8px;font-size:16px;margin-top:6px}
+label{font-size:13px;color:#555;display:block;margin-top:8px}
+.row{display:flex;gap:8px}
+.row>div{flex:1}
+.ad{background:#eee;text-align:center;padding:20px;margin:14px 0;font-size:12px;color:#777}
+.msg{font-size:13px;color:#198754;text-align:center;min-height:16px}
+
+/* CV base */
+#cv{background:#fff;--ac:#0b5ed7}
+#cv .head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+#cv h2{margin:0;font-size:24px}
+#cv h3{font-size:15px;margin:16px 0 6px;padding-bottom:3px}
+#cv p{margin:3px 0;font-size:14px;white-space:pre-wrap}
+#photo{width:90px;height:90px;border-radius:50%;object-fit:cover;display:none}
+.chip{display:inline-block;border:1px solid var(--ac);padding:3px 9px;border-radius:12px;margin:2px;font-size:13px}
+
+/* Template 1: Classic */
+.t1 h3{border-bottom:2px solid var(--ac);color:var(--ac)}
+.t1 h2{color:var(--ac)}
+
+/* Template 2: Modern header */
+.t2 .head{background:var(--ac);color:#fff;padding:14px;border-radius:8px}
+.t2 h3{border-left:5px solid var(--ac);background:#f1f3f7;color:#222;padding:5px 8px}
+
+/* Template 3: Simple black */
+.t3 .head{flex-direction:column;text-align:center}
+.t3 h3{border-bottom:1px solid #000;color:#000;text-transform:uppercase;letter-spacing:2px}
+.t3 .chip{border-color:#000}
+
+@media print{
+ body{background:#fff;padding:0}
+ .noprint{display:none!important}
+ .card{box-shadow:none;padding:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1 class="noprint">Free CV Builder</h1>
+<div class="ad noprint">AD SPACE</div>
+
+<div class="card noprint">
+<button onclick="loadSample()" style="background:#6f42c1;margin-top:0">Fill with sample CV</button>
+
+<label>CV style</label>
+<select id="template">
+ <option value="t1">Classic</option>
+ <option value="t2">Modern header</option>
+ <option value="t3">Simple black</option>
+</select>
+
+<div class="row">
+ <div>
+  <label>Colour</label>
+  <input type="color" id="color" value="#0b5ed7">
+ </div>
+ <div>
+  <label>Font</label>
+  <select id="font">
+   <option value="Arial,sans-serif">Arial</option>
+   <option value="Georgia,serif">Georgia</option>
+   <option value="Verdana,sans-serif">Verdana</option>
+   <option value="'Times New Roman',serif">Times New Roman</option>
+  </select>
+ </div>
+</div>
+
+<label>Passport photo (optional)</label>
+<input type="file" id="photoInput" accept="image/*">
+<button onclick="removePhoto()" style="background:#6c757d;margin-top:0">Remove photo</button>
+
+<label>Basic details</label>
+<input id="name" placeholder="Full name">
+<input id="title" placeholder="Job title (e.g. Graphic Designer)">
+<input id="phone" placeholder="Phone number">
+<input id="email" placeholder="Email">
+<input id="address" placeholder="Address / City">
+<input id="link" placeholder="Website or LinkedIn (optional)">
+
+<label>Profile</label>
+<textarea id="summary" placeholder="Short profile about you"></textarea>
+
+<label>Personal details (optional)</label>
+<textarea id="personal" placeholder="Date of birth, State of origin, Marital status..."></textarea>
+
+<label>Skills</label>
+<textarea id="skills" placeholder="One per line, or separate with commas"></textarea>
+
+<label>Work experience</label>
+<textarea id="exp" placeholder="Job title, company, years. Add a line for each job"></textarea>
+
+<label>Education</label>
+<textarea id="edu" placeholder="School, certificate, year"></textarea>
+
+<label>Certifications and training (optional)</label>
+<textarea id="cert" placeholder="One per line"></textarea>
+
+<label>Languages (optional)</label>
+<textarea id="lang" placeholder="English, Yoruba, Hausa..."></textarea>
+
+<label>Hobbies (optional)</label>
+<textarea id="hobby" placeholder="Reading, football, design..."></textarea>
+
+<label>References</label>
+<textarea id="ref" placeholder="Name, position, phone. Or write: Available on request"></textarea>
+
+<button onclick="makeCV()">Update CV</button>
+<button onclick="downloadPDF()" style="background:#198754">Download CV (PDF)</button>
+<button onclick="copyText()" style="background:#0dcaf0;color:#000">Copy CV as text</button>
+<button onclick="window.print()" style="background:#6c757d">Print CV</button>
+<button onclick="clearAll()" style="background:#dc3545">Clear everything</button>
+<p class="msg" id="msg"></p>
+<p style="font-size:12px;color:#666">If the download does not start, open this page in Chrome.</p>
+</div>
+
+<div class="card t1" id="cv">
+<div class="head">
+ <div>
+  <h2 id="o-name">Your Name</h2>
+  <p id="o-title"></p>
+  <p id="o-contact"></p>
+ </div>
+ <img id="photo" alt="Photo">
+</div>
+<div id="o-body"></div>
+</div>
+
+<div class="ad noprint">AD SPACE</div>
+<p class="noprint" style="font-size:12px;text-align:center">
+Contact: Emmanueloluwatobi140@gmail.com | <a href="privacy.html">Privacy Policy</a>
+</p>
+</div>
+
+<script>
+const FIELDS=["name","title","phone","email","address","link","summary","personal","skills","exp","edu","cert","lang","hobby","ref"];
+let photoData="";
+
+function val(id){return document.getElementById(id).value.trim()}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function say(t){
+ const m=document.getElementById("msg");
+ m.textContent=t;
+ setTimeout(()=>{m.textContent=""},3000);
+}
+
+function section(t,c){
+ return c?"<h3>"+t+"</h3><p>"+esc(c)+"</p>":"";
+}
+
+function chips(t,c){
+ if(!c)return "";
+ const items=c.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
+ return "<h3>"+t+"</h3><div>"+items.map(s=>"<span class='chip'>"+esc(s)+"</span>").join("")+"</div>";
+}
+
+function makeCV(){
+ const cv=document.getElementById("cv");
+ cv.className="card "+document.getElementById("template").value;
+ cv.style.setProperty("--ac",document.getElementById("color").value);
+ cv.style.fontFamily=document.getElementById("font").value;
+
+ document.getElementById("o-name").textContent=val("name")||"Your Name";
+ document.getElementById("o-title").textContent=val("title");
+ document.getElementById("o-contact").textContent=
+  [val("phone"),val("email"),val("address"),val("link")].filter(Boolean).join(" | ");
+
+ const img=document.getElementById("photo");
+ if(photoData){img.src=photoData;img.style.display="block"}
+ else{img.style.display="none"}
+
+ document.getElementById("o-body").innerHTML=
+  section("PROFILE",val("summary"))+
+  section("PERSONAL DETAILS",val("personal"))+
+  chips("SKILLS",val("skills"))+
+  section("WORK EXPERIENCE",val("exp"))+
+  section("EDUCATION",val("edu"))+
+  section("CERTIFICATIONS AND TRAINING",val("cert"))+
+  chips("LANGUAGES",val("lang"))+
+  chips("HOBBIES",val("hobby"))+
+  section("REFERENCES",val("ref"));
+
+ save();
+}
+
+function save(){
+ try{
+  const data=FIELDS.reduce((o,k)=>(o[k]=val(k),o),{});
+  data.template=document.getElementById("template").value;
+  data.color=document.getElementById("color").value;
+  data.font=document.getElementById("font").value;
+  localStorage.setItem("cvdata",JSON.stringify(data));
+  if(photoData)localStorage.setItem("cvphoto",photoData);
+  else localStorage.removeItem("cvphoto");
+ }catch(e){}
+}
+
+document.getElementById("photoInput").addEventListener("change",function(){
+ const f=this.files[0];
+ if(!f)return;
+ const reader=new FileReader();
+ reader.onload=function(e){
+  const im=new Image();
+  im.onload=function(){
+   const c=document.createElement("canvas");
+   const s=300;
+   c.width=s;c.height=s;
+   const m=Math.min(im.width,im.height);
+   c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,s,s);
+   photoData=c.toDataURL("image/jpeg",0.85);
+   makeCV();
+  };
+  im.src=e.target.result;
+ };
+ reader.readAsDataURL(f);
+});
+
+function removePhoto(){
+ photoData="";
+ document.getElementById("photoInput").value="";
+ makeCV();
+}
+
+function downloadPDF(){
+ makeCV();
+ if(typeof html2pdf==="undefined"){
+  alert("PDF tool did not load. Check your internet and open this page in Chrome.");
+  return;
+ }
+ window.scrollTo(0,0);
+ const fname=(val("name")||"my").toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-cv.pdf";
+ html2pdf().set({
+  margin:10,
+  filename:fname,
+  html2canvas:{scale:2,scrollY:0},
+  jsPDF:{unit:"mm",format:"a4"}
+ }).from(document.getElementById("cv")).save();
+}
+
+function copyText(){
+ const labels={summary:"PROFILE",personal:"PERSONAL DETAILS",skills:"SKILLS",exp:"WORK EXPERIENCE",edu:"EDUCATION",cert:"CERTIFICATIONS",lang:"LANGUAGES",hobby:"HOBBIES",ref:"REFERENCES"};
+ let t=(val("name")||"Your Name")+"\n"+val("title")+"\n"+
+  [val("phone"),val("email"),val("address"),val("link")].filter(Boolean).join(" | ")+"\n";
+ for(const k in labels){
+  if(val(k))t+="\n"+labels[k]+"\n"+val(k)+"\n";
+ }
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(t).then(()=>say("CV text copied"),()=>say("Could not copy"));
+ }else{
+  say("Copy not supported here. Open in Chrome.");
+ }
+}
+
+function loadSample(){
+ const s={
+  name:"Chinedu Okafor",title:"Graphic Designer",phone:"08012345678",
+  email:"chinedu@email.com",address:"Lokoja, Kogi State",link:"",
+  summary:"Creative and hardworking graphic designer with 3 years of experience in logos, flyers and brand design.",
+  personal:"Date of birth: 12 May 2000\nState of origin: Kogi\nMarital status: Single",
+  skills:"Logo design, Flyer design, Photo editing, Typing, Microsoft Word",
+  exp:"Graphic Designer, Creative Hub, Lokoja (2023 - Present)\nIntern, Print Studio, Abuja (2022 - 2023)",
+  edu:"Nigeria Certificate in Education (NCE), 2025\nSenior School Certificate, 2018",
+  cert:"Digital skills training, 2024",lang:"English, Yoruba",hobby:"Reading, Football, Design",
+  ref:"Available on request"
+ };
+ FIELDS.forEach(k=>{document.getElementById(k).value=s[k]||""});
+ makeCV();
+ say("Sample loaded. Edit it with your details");
+}
+
+function clearAll(){
+ if(!confirm("Clear all your CV details?"))return;
+ try{localStorage.removeItem("cvdata");localStorage.removeItem("cvphoto")}catch(e){}
+ location.reload();
+}
+
+(function(){
+ try{
+  const d=JSON.parse(localStorage.getItem("cvdata")||"null");
+  if(d){
+   FIELDS.forEach(k=>{document.getElementById(k).value=d[k]||""});
+   if(d.template)document.getElementById("template").value=d.template;
+   if(d.color)document.getElementById("color").value=d.color;
+   if(d.font)document.getElementById("font").value=d.font;
+  }
+  photoData=localStorage.getItem("cvphoto")||"";
+ }catch(e){}
+ makeCV();
+})();
+
+document.querySelectorAll("input,textarea,select").forEach(e=>{
+ e.addEventListener("input",makeCV);
+ e.addEventListener("change",makeCV);
+});
+</script>
+</body>
+</html>
