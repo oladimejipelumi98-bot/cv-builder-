@@ -3,45 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Free CV Builder - Make a CV in Minutes</title>
+<title>Free CV Builder and Cover Letter Maker - Download PDF</title>
+<meta name="description" content="Make a professional CV and cover letter on your phone for free. Pick a style, add your photo and download as PDF.">
+<meta name="theme-color" content="#0b5ed7">
+<meta property="og:title" content="Free CV Builder and Cover Letter Maker">
+<meta property="og:description" content="Make a CV and cover letter on your phone in minutes. Free PDF download.">
+<meta property="og:type" content="website">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
+*{box-sizing:border-box}
 body{font-family:Arial,sans-serif;background:#f4f6fb;margin:0;padding:12px;color:#222}
-.wrap{max-width:600px;margin:auto}
-h1{font-size:22px;text-align:center;color:#0b5ed7}
+.wrap{max-width:620px;margin:auto}
+h1{font-size:22px;text-align:center;color:#0b5ed7;margin:8px 0 2px}
+.sub{text-align:center;font-size:14px;color:#555;margin:0 0 8px}
 .card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 10px #0002;margin-bottom:14px}
-input,textarea,select{width:100%;box-sizing:border-box;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:8px;font-size:15px;font-family:inherit;background:#fff}
+input,textarea,select{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:8px;font-size:15px;font-family:inherit;background:#fff;color:#222}
 input[type=color]{height:44px;padding:3px}
 textarea{min-height:70px}
 button{width:100%;padding:12px;background:#0b5ed7;color:#fff;border:0;border-radius:8px;font-size:16px;margin-top:6px}
-label{font-size:13px;color:#555;display:block;margin-top:8px}
+label{font-size:13px;color:#555;display:block;margin-top:10px}
+h4{margin:16px 0 4px;font-size:16px;color:#0b5ed7}
 .row{display:flex;gap:8px}
 .row>div{flex:1}
-.ad{background:#eee;text-align:center;padding:20px;margin:14px 0;font-size:12px;color:#777}
-.msg{font-size:13px;color:#198754;text-align:center;min-height:16px}
+.ad{background:#eee;text-align:center;padding:10px;margin:14px 0;min-height:50px;overflow:hidden}
+.hidden{display:none}
+.tabs{display:flex;gap:8px;margin:10px 0 12px}
+.tabs button{margin:0;background:#dfe6f3;color:#0b5ed7;flex:1}
+.tabs button.active{background:#0b5ed7;color:#fff}
+.entry-box{border:1px solid #ddd;border-radius:10px;padding:8px;margin:8px 0;background:#fafafa}
+button.small{width:auto;padding:6px 12px;font-size:13px;background:#dc3545;margin-top:2px}
+button.mv{background:#6c757d;margin-left:6px}
+button.add{background:#6f42c1}
+.ord{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #eee;font-size:14px}
+details{border-bottom:1px solid #eee;padding:8px 0}
+summary{font-weight:bold;font-size:15px}
+details p{font-size:14px;color:#444;margin:6px 0}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:20px;font-size:14px;display:none;z-index:99;max-width:90%;text-align:center}
 
-/* CV base */
-#cv{background:#fff;--ac:#0b5ed7}
-#cv .head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-#cv h2{margin:0;font-size:24px}
+/* CV and letter base */
+#cv,#cl{background:#fff;color:#222;--ac:#0b5ed7}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+#cv h2,#cl h2{margin:0;font-size:24px}
 #cv h3{font-size:15px;margin:16px 0 6px;padding-bottom:3px}
-#cv p{margin:3px 0;font-size:14px;white-space:pre-wrap}
-#photo{width:90px;height:90px;border-radius:50%;object-fit:cover;display:none}
+#cv p,#cl p{margin:3px 0;font-size:14px;white-space:pre-wrap}
+.entry{margin:6px 0}
+.et{font-size:14px;display:flex;justify-content:space-between;gap:8px}
+.per{font-size:12px;color:#555;white-space:nowrap}
+#photo{width:90px;height:90px;object-fit:cover;display:none;border-radius:50%}
+#photo.sq{border-radius:8px}
 .chip{display:inline-block;border:1px solid var(--ac);padding:3px 9px;border-radius:12px;margin:2px;font-size:13px}
+#cl h2{color:var(--ac)}
+#cl .lh{border-bottom:3px solid var(--ac);padding-bottom:8px;margin-bottom:14px}
 
-/* Template 1: Classic */
+/* Style 1: Classic */
 .t1 h3{border-bottom:2px solid var(--ac);color:var(--ac)}
 .t1 h2{color:var(--ac)}
 
-/* Template 2: Modern header */
+/* Style 2: Modern header */
 .t2 .head{background:var(--ac);color:#fff;padding:14px;border-radius:8px}
+.t2 .head .per{color:#fff}
 .t2 h3{border-left:5px solid var(--ac);background:#f1f3f7;color:#222;padding:5px 8px}
 
-/* Template 3: Simple black */
+/* Style 3: Simple black */
 .t3 .head{flex-direction:column;text-align:center}
 .t3 h3{border-bottom:1px solid #000;color:#000;text-transform:uppercase;letter-spacing:2px}
 .t3 .chip{border-color:#000}
 
+/* Style 4: Sidebar two columns */
+.t4 .head{border-bottom:3px solid var(--ac);padding-bottom:10px}
+.t4 h2{color:var(--ac)}
+.t4 h3{color:var(--ac);border-bottom:1px solid var(--ac)}
+.t4 .cols{display:flex;gap:14px;margin-top:6px}
+.t4 .col-main{flex:2;min-width:0}
+.t4 .col-side{flex:1;min-width:0;background:#f1f3f7;padding:4px 10px 10px;border-radius:8px}
+
+/* Style 5: Elegant */
+.t5 .head{flex-direction:column;text-align:center;border-top:4px double var(--ac);border-bottom:4px double var(--ac);padding:10px 0}
+.t5 h2{letter-spacing:3px;text-transform:uppercase}
+.t5 h3{text-align:center;color:var(--ac);letter-spacing:2px;border-bottom:1px dotted var(--ac)}
+.t3 #photo,.t5 #photo{order:-1}
+
+@media (prefers-color-scheme:dark){
+ body{background:#121212;color:#eee}
+ .card:not(#cv):not(#cl){background:#1e1e1e}
+ input,textarea,select{background:#2a2a2a;color:#eee;border-color:#444}
+ label,.sub{color:#bbb}
+ .entry-box{background:#252525;border-color:#444}
+ .ord,details{border-color:#333}
+ details p{color:#ccc}
+ .tabs button{background:#2a2a2a;color:#9ec1ff}
+ .tabs button.active{background:#0b5ed7;color:#fff}
+}
 @media print{
  body{background:#fff;padding:0}
  .noprint{display:none!important}
@@ -52,7 +104,11 @@ label{font-size:13px;color:#555;display:block;margin-top:8px}
 <body>
 <div class="wrap">
 <h1 class="noprint">Free CV Builder</h1>
-<div class="ad noprint"><script>
+<p class="sub noprint">Make a CV and cover letter on your phone. Download as PDF.</p>
+
+<div class="ad noprint">
+<!-- PASTE YOUR 320x50 ADSTERRA CODE BELOW THIS LINE -->
+<script>
   atOptions = {
     'key' : 'a54092ebc4369d73c516f405150f823d',
     'format' : 'iframe',
@@ -61,8 +117,25 @@ label{font-size:13px;color:#555;display:block;margin-top:8px}
     'params' : {}
   };
 </script>
-<script src="https://bauval.org/22/a54092ebc4369d73c516f405150f823d"></script></div>
+<script src="https://bauval.org/22/a54092ebc4369d73c516f405150f823d"></script>
+</div>
 
+<div class="card noprint" style="padding:10px 16px">
+<label style="margin-top:0">Saved CV (you can keep up to 3 on this phone)</label>
+<select id="slot" onchange="switchSlot(this.value)">
+ <option value="1">CV 1</option>
+ <option value="2">CV 2</option>
+ <option value="3">CV 3</option>
+</select>
+</div>
+
+<div class="tabs noprint">
+ <button id="tabCV" class="active" onclick="showTab('cv')">CV</button>
+ <button id="tabCL" onclick="showTab('cl')">Cover letter</button>
+</div>
+
+<!-- ================= CV TAB ================= -->
+<div id="paneCV">
 <div class="card noprint">
 <button onclick="loadSample()" style="background:#6f42c1;margin-top:0">Fill with sample CV</button>
 
@@ -71,6 +144,8 @@ label{font-size:13px;color:#555;display:block;margin-top:8px}
  <option value="t1">Classic</option>
  <option value="t2">Modern header</option>
  <option value="t3">Simple black</option>
+ <option value="t4">Sidebar (two columns)</option>
+ <option value="t5">Elegant</option>
 </select>
 
 <div class="row">
@@ -91,9 +166,20 @@ label{font-size:13px;color:#555;display:block;margin-top:8px}
 
 <label>Passport photo (optional)</label>
 <input type="file" id="photoInput" accept="image/*">
-<button onclick="removePhoto()" style="background:#6c757d;margin-top:0">Remove photo</button>
+<div class="row">
+ <div>
+  <select id="shape">
+   <option value="round">Round photo</option>
+   <option value="square">Square photo</option>
+   <option value="none">No photo</option>
+  </select>
+ </div>
+ <div>
+  <button onclick="removePhoto()" style="background:#6c757d;margin-top:5px">Remove photo</button>
+ </div>
+</div>
 
-<label>Basic details</label>
+<h4>Basic details</h4>
 <input id="name" placeholder="Full name">
 <input id="title" placeholder="Job title (e.g. Graphic Designer)">
 <input id="phone" placeholder="Phone number">
@@ -101,39 +187,45 @@ label{font-size:13px;color:#555;display:block;margin-top:8px}
 <input id="address" placeholder="Address / City">
 <input id="link" placeholder="Website or LinkedIn (optional)">
 
-<label>Profile</label>
+<h4>Profile</h4>
 <textarea id="summary" placeholder="Short profile about you"></textarea>
 
-<label>Personal details (optional)</label>
+<h4>Personal details (optional)</h4>
 <textarea id="personal" placeholder="Date of birth, State of origin, Marital status..."></textarea>
 
-<label>Skills</label>
+<h4>Skills</h4>
 <textarea id="skills" placeholder="One per line, or separate with commas"></textarea>
 
-<label>Work experience</label>
-<textarea id="exp" placeholder="Job title, company, years. Add a line for each job"></textarea>
+<h4>Work experience</h4>
+<div id="expList"></div>
+<button class="add" onclick="addEntry('exps')">+ Add another job</button>
 
-<label>Education</label>
-<textarea id="edu" placeholder="School, certificate, year"></textarea>
+<h4>Education</h4>
+<div id="eduList"></div>
+<button class="add" onclick="addEntry('edus')">+ Add another school</button>
 
-<label>Certifications and training (optional)</label>
+<h4>Certifications and training (optional)</h4>
 <textarea id="cert" placeholder="One per line"></textarea>
 
-<label>Languages (optional)</label>
+<h4>Languages (optional)</h4>
 <textarea id="lang" placeholder="English, Yoruba, Hausa..."></textarea>
 
-<label>Hobbies (optional)</label>
+<h4>Hobbies (optional)</h4>
 <textarea id="hobby" placeholder="Reading, football, design..."></textarea>
 
-<label>References</label>
+<h4>References</h4>
 <textarea id="ref" placeholder="Name, position, phone. Or write: Available on request"></textarea>
+
+<details>
+ <summary>Change section order (single-column styles)</summary>
+ <div id="orderList"></div>
+</details>
 
 <button onclick="makeCV()">Update CV</button>
 <button onclick="downloadPDF()" style="background:#198754">Download CV (PDF)</button>
 <button onclick="copyText()" style="background:#0dcaf0;color:#000">Copy CV as text</button>
 <button onclick="window.print()" style="background:#6c757d">Print CV</button>
-<button onclick="clearAll()" style="background:#dc3545">Clear everything</button>
-<p class="msg" id="msg"></p>
+<button onclick="clearAll()" style="background:#dc3545">Clear this CV</button>
 <p style="font-size:12px;color:#666">If the download does not start, open this page in Chrome.</p>
 </div>
 
@@ -148,8 +240,64 @@ label{font-size:13px;color:#555;display:block;margin-top:8px}
 </div>
 <div id="o-body"></div>
 </div>
+</div>
 
-<div class="ad noprint"><script>
+<!-- ================= COVER LETTER TAB ================= -->
+<div id="paneCL" class="hidden">
+<div class="card noprint">
+<p style="font-size:13px;color:#555;margin-top:0">Your name, phone, email and address come from the CV tab.</p>
+<label>Company you are applying to</label>
+<input id="clCompany" placeholder="e.g. ABC Limited">
+<label>Position</label>
+<input id="clPosition" placeholder="e.g. Office Assistant">
+<label>Why you want this job (optional)</label>
+<textarea id="clAbout" placeholder="One or two sentences"></textarea>
+<label>Your strengths (optional)</label>
+<textarea id="clStrengths" placeholder="Leave empty to use your CV skills"></textarea>
+<button onclick="genLetter()" style="background:#6f42c1">Write my letter</button>
+<label>Your letter (you can edit it)</label>
+<textarea id="clBody" style="min-height:240px"></textarea>
+<button onclick="downloadPDF()" style="background:#198754">Download letter (PDF)</button>
+<button onclick="copyText()" style="background:#0dcaf0;color:#000">Copy letter text</button>
+<button onclick="window.print()" style="background:#6c757d">Print letter</button>
+</div>
+
+<div class="card" id="cl">
+<div class="lh">
+ <h2 id="cl-name">Your Name</h2>
+ <p id="cl-contact"></p>
+</div>
+<p id="cl-date"></p>
+<p id="cl-to" style="margin-top:10px"></p>
+<p id="cl-body" style="margin-top:14px"></p>
+</div>
+</div>
+
+<!-- ================= SHARE AND HIRE ================= -->
+<div class="card noprint">
+<h4 style="margin-top:0">Share this tool</h4>
+<p style="font-size:14px;color:#444;margin:4px 0">Know someone looking for a job? Send it to them.</p>
+<button onclick="shareSite()" style="background:#25D366">Share with a friend</button>
+<h4>Need a professionally designed CV?</h4>
+<p style="font-size:14px;color:#444;margin:4px 0">CV design, cover letters, flyers and more. Chat me on WhatsApp.</p>
+<button onclick="hireMe()" style="background:#128C7E">Chat me on WhatsApp</button>
+</div>
+
+<!-- ================= HOW TO USE AND FAQ ================= -->
+<div class="card noprint">
+<h4 style="margin-top:0">How to use</h4>
+<p style="font-size:14px;color:#444;margin:4px 0">1. Tap "Fill with sample CV" or type your own details.<br>2. Pick a style, colour and font.<br>3. Add your photo if you want.<br>4. Tap "Download CV (PDF)".<br>5. Open the Cover letter tab to make a matching letter.</p>
+<h4>Questions</h4>
+<details><summary>Is it free?</summary><p>Yes. You can make and download as many CVs as you like.</p></details>
+<details><summary>Is my information safe?</summary><p>Your details stay on your own phone. They are saved in your browser and are not sent to any server.</p></details>
+<details><summary>My download did not start</summary><p>Open this page in Chrome, check your internet connection, and try again.</p></details>
+<details><summary>Can I keep more than one CV?</summary><p>Yes. Use the "Saved CV" box at the top to switch between CV 1, CV 2 and CV 3.</p></details>
+<details><summary>Can I add this page to my home screen?</summary><p>Yes. In Chrome, tap the menu (three dots) and choose "Add to Home screen".</p></details>
+</div>
+
+<div class="ad noprint">
+<!-- PASTE YOUR 300x250 ADSTERRA CODE BELOW THIS LINE -->
+<script>
   atOptions = {
     'key' : '01454a893c36919a1f619ca77ae3d7be',
     'format' : 'iframe',
@@ -158,76 +306,272 @@ label{font-size:13px;color:#555;display:block;margin-top:8px}
     'params' : {}
   };
 </script>
-<script src="https://bauval.org/22/01454a893c36919a1f619ca77ae3d7be"></script></div>
+<script src="https://bauval.org/22/01454a893c36919a1f619ca77ae3d7be"></script>
+</div>
+
 <p class="noprint" style="font-size:12px;text-align:center">
-Contact: Emmanueloluwatobi140@gmail.com | <a href="privacy.html">Privacy Policy</a>
+Contact: Emmanueloluwatobi140gmail.com | <a href="privacy.html">Privacy Policy</a>
 </p>
 </div>
 
-<script>
-const FIELDS=["name","title","phone","email","address","link","summary","personal","skills","exp","edu","cert","lang","hobby","ref"];
-let photoData="";
+<div id="toast"></div>
 
-function val(id){return document.getElementById(id).value.trim()}
-function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+<script>
+/* ===== CHANGE THIS: your WhatsApp number, country code first, no + and no spaces ===== */
+const WA_NUMBER="2348105157514";
+
+const FIELDS=["name","title","phone","email","address","link","summary","personal","skills","cert","lang","hobby","ref"];
+const CLF=["clCompany","clPosition","clAbout","clStrengths","clBody"];
+const LABELS={profile:"Profile",personal:"Personal details",skills:"Skills",exp:"Work experience",edu:"Education",cert:"Certifications",lang:"Languages",hobby:"Hobbies",ref:"References"};
+const DEFAULT_ORDER=["profile","personal","skills","exp","edu","cert","lang","hobby","ref"];
+
+let photoData="";
+let exps=[{role:"",co:"",per:"",det:""}];
+let edus=[{school:"",course:"",year:""}];
+let order=DEFAULT_ORDER.slice();
+let tab="cv";
+let slot="1";
+
+function $(id){return document.getElementById(id)}
+function val(id){return $(id).value.trim()}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function say(t){
- const m=document.getElementById("msg");
+ const m=$("toast");
  m.textContent=t;
- setTimeout(()=>{m.textContent=""},3000);
+ m.style.display="block";
+ clearTimeout(say.t);
+ say.t=setTimeout(function(){m.style.display="none"},3500);
 }
 
+/* ---------- building blocks ---------- */
 function section(t,c){
  return c?"<h3>"+t+"</h3><p>"+esc(c)+"</p>":"";
 }
-
 function chips(t,c){
  if(!c)return "";
- const items=c.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
- return "<h3>"+t+"</h3><div>"+items.map(s=>"<span class='chip'>"+esc(s)+"</span>").join("")+"</div>";
+ const items=c.split(/[\n,]+/).map(function(s){return s.trim()}).filter(Boolean);
+ return "<h3>"+t+"</h3><div>"+items.map(function(s){return "<span class='chip'>"+esc(s)+"</span>"}).join("")+"</div>";
+}
+function expHTML(){
+ const items=exps.filter(function(e){return e.role||e.co||e.per||e.det});
+ if(!items.length)return "";
+ return "<h3>WORK EXPERIENCE</h3>"+items.map(function(e){
+  return "<div class='entry'><div class='et'><span><b>"+esc(e.role)+"</b>"+(e.co?" - "+esc(e.co):"")+"</span>"+(e.per?"<span class='per'>"+esc(e.per)+"</span>":"")+"</div>"+(e.det?"<p>"+esc(e.det)+"</p>":"")+"</div>";
+ }).join("");
+}
+function eduHTML(){
+ const items=edus.filter(function(e){return e.school||e.course||e.year});
+ if(!items.length)return "";
+ return "<h3>EDUCATION</h3>"+items.map(function(e){
+  return "<div class='entry'><div class='et'><span><b>"+esc(e.school)+"</b></span>"+(e.year?"<span class='per'>"+esc(e.year)+"</span>":"")+"</div>"+(e.course?"<p>"+esc(e.course)+"</p>":"")+"</div>";
+ }).join("");
 }
 
+/* ---------- job and school entries ---------- */
+function renderEntries(){
+ $("expList").innerHTML=exps.map(function(e,i){
+  return '<div class="entry-box">'+
+   '<input data-t="exps" data-i="'+i+'" data-k="role" placeholder="Job title" value="'+esc(e.role)+'">'+
+   '<input data-t="exps" data-i="'+i+'" data-k="co" placeholder="Company and place" value="'+esc(e.co)+'">'+
+   '<input data-t="exps" data-i="'+i+'" data-k="per" placeholder="Period (e.g. 2023 - Present)" value="'+esc(e.per)+'">'+
+   '<textarea data-t="exps" data-i="'+i+'" data-k="det" placeholder="What you did (short)">'+esc(e.det)+'</textarea>'+
+   '<button class="small" onclick="removeEntry(\'exps\','+i+')">Remove</button></div>';
+ }).join("");
+ $("eduList").innerHTML=edus.map(function(e,i){
+  return '<div class="entry-box">'+
+   '<input data-t="edus" data-i="'+i+'" data-k="school" placeholder="School or college" value="'+esc(e.school)+'">'+
+   '<input data-t="edus" data-i="'+i+'" data-k="course" placeholder="Certificate or course" value="'+esc(e.course)+'">'+
+   '<input data-t="edus" data-i="'+i+'" data-k="year" placeholder="Year (e.g. 2025)" value="'+esc(e.year)+'">'+
+   '<button class="small" onclick="removeEntry(\'edus\','+i+')">Remove</button></div>';
+ }).join("");
+ document.querySelectorAll("[data-t]").forEach(function(el){
+  el.addEventListener("input",function(){
+   const arr=el.dataset.t==="exps"?exps:edus;
+   arr[el.dataset.i][el.dataset.k]=el.value;
+   makeCV();
+  });
+ });
+}
+function addEntry(t){
+ if(t==="exps")exps.push({role:"",co:"",per:"",det:""});
+ else edus.push({school:"",course:"",year:""});
+ renderEntries();
+}
+function removeEntry(t,i){
+ const arr=t==="exps"?exps:edus;
+ arr.splice(i,1);
+ if(!arr.length){
+  if(t==="exps")arr.push({role:"",co:"",per:"",det:""});
+  else arr.push({school:"",course:"",year:""});
+ }
+ renderEntries();
+ makeCV();
+}
+
+/* ---------- section order ---------- */
+function renderOrder(){
+ $("orderList").innerHTML=order.map(function(k,i){
+  return '<div class="ord"><span>'+LABELS[k]+'</span><span>'+
+   '<button class="small mv" onclick="moveSec('+i+',-1)">&uarr;</button>'+
+   '<button class="small mv" onclick="moveSec('+i+',1)">&darr;</button></span></div>';
+ }).join("");
+}
+function moveSec(i,d){
+ const j=i+d;
+ if(j<0||j>=order.length)return;
+ const tmp=order[i];order[i]=order[j];order[j]=tmp;
+ renderOrder();
+ makeCV();
+}
+
+/* ---------- make the CV ---------- */
 function makeCV(){
- const cv=document.getElementById("cv");
- cv.className="card "+document.getElementById("template").value;
- cv.style.setProperty("--ac",document.getElementById("color").value);
- cv.style.fontFamily=document.getElementById("font").value;
+ const cv=$("cv");
+ const tpl=$("template").value;
+ cv.className="card "+tpl;
+ cv.style.setProperty("--ac",$("color").value);
+ cv.style.fontFamily=$("font").value;
 
- document.getElementById("o-name").textContent=val("name")||"Your Name";
- document.getElementById("o-title").textContent=val("title");
- document.getElementById("o-contact").textContent=
-  [val("phone"),val("email"),val("address"),val("link")].filter(Boolean).join(" | ");
+ $("o-name").textContent=val("name")||"Your Name";
+ $("o-title").textContent=val("title");
+ $("o-contact").textContent=[val("phone"),val("email"),val("address"),val("link")].filter(Boolean).join(" | ");
 
- const img=document.getElementById("photo");
- if(photoData){img.src=photoData;img.style.display="block"}
- else{img.style.display="none"}
+ const img=$("photo");
+ const shape=$("shape").value;
+ if(photoData&&shape!=="none"){
+  img.src=photoData;
+  img.className=shape==="square"?"sq":"";
+  img.style.display="block";
+ }else{
+  img.style.display="none";
+ }
 
- document.getElementById("o-body").innerHTML=
-  section("PROFILE",val("summary"))+
-  section("PERSONAL DETAILS",val("personal"))+
-  chips("SKILLS",val("skills"))+
-  section("WORK EXPERIENCE",val("exp"))+
-  section("EDUCATION",val("edu"))+
-  section("CERTIFICATIONS AND TRAINING",val("cert"))+
-  chips("LANGUAGES",val("lang"))+
-  chips("HOBBIES",val("hobby"))+
-  section("REFERENCES",val("ref"));
-
+ const S={
+  profile:section("PROFILE",val("summary")),
+  personal:section("PERSONAL DETAILS",val("personal")),
+  skills:chips("SKILLS",val("skills")),
+  exp:expHTML(),
+  edu:eduHTML(),
+  cert:section("CERTIFICATIONS AND TRAINING",val("cert")),
+  lang:chips("LANGUAGES",val("lang")),
+  hobby:chips("HOBBIES",val("hobby")),
+  ref:section("REFERENCES",val("ref"))
+ };
+ let html;
+ if(tpl==="t4"){
+  html="<div class='cols'><div class='col-main'>"+S.profile+S.exp+S.edu+S.cert+S.ref+"</div><div class='col-side'>"+S.personal+S.skills+S.lang+S.hobby+"</div></div>";
+ }else{
+  html=order.map(function(k){return S[k]}).join("");
+ }
+ $("o-body").innerHTML=html;
  save();
 }
 
-function save(){
- try{
-  const data=FIELDS.reduce((o,k)=>(o[k]=val(k),o),{});
-  data.template=document.getElementById("template").value;
-  data.color=document.getElementById("color").value;
-  data.font=document.getElementById("font").value;
-  localStorage.setItem("cvdata",JSON.stringify(data));
-  if(photoData)localStorage.setItem("cvphoto",photoData);
-  else localStorage.removeItem("cvphoto");
- }catch(e){}
+/* ---------- cover letter ---------- */
+function makeCL(){
+ $("cl").style.setProperty("--ac",$("color").value);
+ $("cl").style.fontFamily=$("font").value;
+ $("cl-name").textContent=val("name")||"Your Name";
+ $("cl-contact").textContent=[val("phone"),val("email"),val("address")].filter(Boolean).join(" | ");
+ $("cl-date").textContent=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+ const co=val("clCompany");
+ $("cl-to").textContent="The Hiring Manager"+(co?"\n"+co:"");
+ $("cl-body").textContent=$("clBody").value.trim()||"Tap \u201CWrite my letter\u201D above, then edit the text to suit you.";
+ save();
+}
+function genLetter(){
+ const name=val("name")||"Your Name";
+ const pos=val("clPosition")||"the available position";
+ const co=val("clCompany")||"your organisation";
+ const about=val("clAbout")||"I am a hardworking, honest and dedicated person who is eager to learn and add value to your team.";
+ let strengths=val("clStrengths");
+ if(!strengths){
+  const sk=val("skills").split(/[\n,]+/).map(function(s){return s.trim()}).filter(Boolean).slice(0,6);
+  strengths=sk.length?"My key strengths include "+sk.join(", ")+".":"I work well under pressure, communicate clearly and always meet deadlines.";
+ }
+ const contact=[val("phone"),val("email")].filter(Boolean).join(" or ");
+ let t="Dear Hiring Manager,\n\nRE: APPLICATION FOR "+pos.toUpperCase()+"\n\n";
+ t+="I am writing to apply for the position of "+pos+" at "+co+". "+about+"\n\n";
+ t+=strengths+"\n\n";
+ t+="Thank you for taking the time to consider my application. I would welcome the chance to discuss it further at an interview"+(contact?" and can be reached on "+contact:"")+".\n\n";
+ t+="Yours faithfully,\n"+name;
+ $("clBody").value=t;
+ makeCL();
+ say("Letter written. You can edit it");
 }
 
-document.getElementById("photoInput").addEventListener("change",function(){
+/* ---------- tabs ---------- */
+function showTab(t){
+ tab=t;
+ $("paneCV").classList.toggle("hidden",t!=="cv");
+ $("paneCL").classList.toggle("hidden",t!=="cl");
+ $("tabCV").classList.toggle("active",t==="cv");
+ $("tabCL").classList.toggle("active",t==="cl");
+ if(t==="cl")makeCL();
+ window.scrollTo(0,0);
+}
+
+/* ---------- save and load (3 slots) ---------- */
+function save(){
+ try{
+  const d={};
+  FIELDS.forEach(function(k){d[k]=val(k)});
+  CLF.forEach(function(k){d[k]=$(k).value});
+  d.template=$("template").value;
+  d.color=$("color").value;
+  d.font=$("font").value;
+  d.shape=$("shape").value;
+  d.exps=exps;
+  d.edus=edus;
+  d.order=order;
+  localStorage.setItem("cvdata2_"+slot,JSON.stringify(d));
+  if(photoData)localStorage.setItem("cvphoto_"+slot,photoData);
+  else localStorage.removeItem("cvphoto_"+slot);
+ }catch(e){}
+}
+function resetAll(){
+ FIELDS.concat(CLF).forEach(function(k){$(k).value=""});
+ $("template").value="t1";
+ $("color").value="#0b5ed7";
+ $("font").selectedIndex=0;
+ $("shape").value="round";
+ $("photoInput").value="";
+ photoData="";
+ exps=[{role:"",co:"",per:"",det:""}];
+ edus=[{school:"",course:"",year:""}];
+ order=DEFAULT_ORDER.slice();
+}
+function load(){
+ resetAll();
+ try{
+  const d=JSON.parse(localStorage.getItem("cvdata2_"+slot)||"null");
+  if(d){
+   FIELDS.concat(CLF).forEach(function(k){if(d[k]!==undefined)$(k).value=d[k]});
+   if(d.template)$("template").value=d.template;
+   if(d.color)$("color").value=d.color;
+   if(d.font)$("font").value=d.font;
+   if(d.shape)$("shape").value=d.shape;
+   if(Array.isArray(d.exps)&&d.exps.length)exps=d.exps;
+   if(Array.isArray(d.edus)&&d.edus.length)edus=d.edus;
+   if(Array.isArray(d.order)&&d.order.length===DEFAULT_ORDER.length)order=d.order;
+  }
+  photoData=localStorage.getItem("cvphoto_"+slot)||"";
+ }catch(e){}
+}
+function switchSlot(s){
+ save();
+ slot=s;
+ try{localStorage.setItem("cvslot",s)}catch(e){}
+ load();
+ renderEntries();
+ renderOrder();
+ makeCV();
+ makeCL();
+ say("Switched to CV "+s);
+}
+
+/* ---------- photo ---------- */
+$("photoInput").addEventListener("change",function(){
  const f=this.files[0];
  if(!f)return;
  const reader=new FileReader();
@@ -246,43 +590,72 @@ document.getElementById("photoInput").addEventListener("change",function(){
  };
  reader.readAsDataURL(f);
 });
-
 function removePhoto(){
  photoData="";
- document.getElementById("photoInput").value="";
+ $("photoInput").value="";
  makeCV();
 }
 
+/* ---------- download, copy, share ---------- */
 function downloadPDF(){
- makeCV();
+ if(tab==="cv")makeCV();else makeCL();
  if(typeof html2pdf==="undefined"){
   alert("PDF tool did not load. Check your internet and open this page in Chrome.");
   return;
  }
  window.scrollTo(0,0);
- const fname=(val("name")||"my").toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-cv.pdf";
+ const base=(val("name")||"my").toLowerCase().replace(/[^a-z0-9]+/g,"-");
  html2pdf().set({
   margin:10,
-  filename:fname,
+  filename:base+(tab==="cv"?"-cv.pdf":"-cover-letter.pdf"),
   html2canvas:{scale:2,scrollY:0},
   jsPDF:{unit:"mm",format:"a4"}
- }).from(document.getElementById("cv")).save();
+ }).from($(tab==="cv"?"cv":"cl")).save();
 }
-
+function cvText(){
+ let t=(val("name")||"Your Name")+"\n"+val("title")+"\n"+[val("phone"),val("email"),val("address"),val("link")].filter(Boolean).join(" | ")+"\n";
+ function add(h,c){if(c)t+="\n"+h+"\n"+c+"\n"}
+ add("PROFILE",val("summary"));
+ add("PERSONAL DETAILS",val("personal"));
+ add("SKILLS",val("skills"));
+ add("WORK EXPERIENCE",exps.filter(function(e){return e.role||e.co||e.per||e.det}).map(function(e){
+  return [e.role,e.co,e.per].filter(Boolean).join(", ")+(e.det?"\n"+e.det:"");
+ }).join("\n\n"));
+ add("EDUCATION",edus.filter(function(e){return e.school||e.course||e.year}).map(function(e){
+  return [e.school,e.course,e.year].filter(Boolean).join(", ");
+ }).join("\n"));
+ add("CERTIFICATIONS",val("cert"));
+ add("LANGUAGES",val("lang"));
+ add("HOBBIES",val("hobby"));
+ add("REFERENCES",val("ref"));
+ return t;
+}
 function copyText(){
- const labels={summary:"PROFILE",personal:"PERSONAL DETAILS",skills:"SKILLS",exp:"WORK EXPERIENCE",edu:"EDUCATION",cert:"CERTIFICATIONS",lang:"LANGUAGES",hobby:"HOBBIES",ref:"REFERENCES"};
- let t=(val("name")||"Your Name")+"\n"+val("title")+"\n"+
-  [val("phone"),val("email"),val("address"),val("link")].filter(Boolean).join(" | ")+"\n";
- for(const k in labels){
-  if(val(k))t+="\n"+labels[k]+"\n"+val(k)+"\n";
- }
+ const t=tab==="cl"?$("clBody").value.trim():cvText();
+ if(!t){say("Nothing to copy yet");return}
  if(navigator.clipboard&&navigator.clipboard.writeText){
-  navigator.clipboard.writeText(t).then(()=>say("CV text copied"),()=>say("Could not copy"));
+  navigator.clipboard.writeText(t).then(function(){say("Copied")},function(){say("Could not copy")});
  }else{
   say("Copy not supported here. Open in Chrome.");
  }
 }
+function shareSite(){
+ const text="Free CV Builder: make a CV and cover letter on your phone and download as PDF. Try it here: "+location.href;
+ if(navigator.share){
+  navigator.share({title:"Free CV Builder",text:text,url:location.href}).catch(function(){});
+ }else{
+  window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
+ }
+}
+function hireMe(){
+ if(WA_NUMBER.indexOf("X")>-1){
+  alert("Website owner: set your WhatsApp number in the WA_NUMBER line of the code.");
+  return;
+ }
+ window.open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent("Hello, I saw your CV Builder website. I want a professionally designed CV."),"_blank");
+}
 
+/* ---------- sample and clear ---------- */
 function loadSample(){
  const s={
   name:"Chinedu Okafor",title:"Graphic Designer",phone:"08012345678",
@@ -290,40 +663,51 @@ function loadSample(){
   summary:"Creative and hardworking graphic designer with 3 years of experience in logos, flyers and brand design.",
   personal:"Date of birth: 12 May 2000\nState of origin: Kogi\nMarital status: Single",
   skills:"Logo design, Flyer design, Photo editing, Typing, Microsoft Word",
-  exp:"Graphic Designer, Creative Hub, Lokoja (2023 - Present)\nIntern, Print Studio, Abuja (2022 - 2023)",
-  edu:"Nigeria Certificate in Education (NCE), 2025\nSenior School Certificate, 2018",
   cert:"Digital skills training, 2024",lang:"English, Yoruba",hobby:"Reading, Football, Design",
-  ref:"Available on request"
+  ref:"Available on request",
+  clCompany:"Bright Prints Limited",clPosition:"Graphic Designer",clAbout:"",clStrengths:"",clBody:""
  };
- FIELDS.forEach(k=>{document.getElementById(k).value=s[k]||""});
+ FIELDS.concat(CLF).forEach(function(k){$(k).value=s[k]||""});
+ exps=[
+  {role:"Graphic Designer",co:"Creative Hub, Lokoja",per:"2023 - Present",det:"Designed logos, flyers and social media posts for local businesses."},
+  {role:"Intern",co:"Print Studio, Abuja",per:"2022 - 2023",det:"Prepared files for printing and assisted clients."}
+ ];
+ edus=[
+  {school:"College of Education",course:"Nigeria Certificate in Education (NCE)",year:"2025"},
+  {school:"Government Secondary School",course:"Senior School Certificate",year:"2018"}
+ ];
+ renderEntries();
  makeCV();
+ makeCL();
  say("Sample loaded. Edit it with your details");
 }
-
 function clearAll(){
- if(!confirm("Clear all your CV details?"))return;
- try{localStorage.removeItem("cvdata");localStorage.removeItem("cvphoto")}catch(e){}
- location.reload();
+ if(!confirm("Clear everything in this CV?"))return;
+ resetAll();
+ renderEntries();
+ renderOrder();
+ makeCV();
+ makeCL();
+ say("Cleared");
 }
 
-(function(){
- try{
-  const d=JSON.parse(localStorage.getItem("cvdata")||"null");
-  if(d){
-   FIELDS.forEach(k=>{document.getElementById(k).value=d[k]||""});
-   if(d.template)document.getElementById("template").value=d.template;
-   if(d.color)document.getElementById("color").value=d.color;
-   if(d.font)document.getElementById("font").value=d.font;
-  }
-  photoData=localStorage.getItem("cvphoto")||"";
- }catch(e){}
+/* ---------- start ---------- */
+(function init(){
+ try{slot=localStorage.getItem("cvslot")||"1"}catch(e){}
+ $("slot").value=slot;
+ load();
+ document.querySelectorAll("#paneCV input,#paneCV textarea,#paneCV select").forEach(function(e){
+  e.addEventListener("input",makeCV);
+  e.addEventListener("change",makeCV);
+ });
+ document.querySelectorAll("#paneCL input,#paneCL textarea").forEach(function(e){
+  e.addEventListener("input",makeCL);
+ });
+ renderEntries();
+ renderOrder();
  makeCV();
+ makeCL();
 })();
-
-document.querySelectorAll("input,textarea,select").forEach(e=>{
- e.addEventListener("input",makeCV);
- e.addEventListener("change",makeCV);
-});
 </script>
 </body>
 </html>
